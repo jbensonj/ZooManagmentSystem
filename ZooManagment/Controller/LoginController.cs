@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using ZooManagment.Entity;
-using ZooManagment.Controller;
 
 namespace ZooManagment.Controller
 {
