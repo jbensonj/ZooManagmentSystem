@@ -5,7 +5,7 @@ namespace ZooManagment.Entity
 {
     public class Tasks
     {
-        private int _taskID, _keeperID;
+        private int _taskID, _employeeID;
         private string _name, _priority, _location, _comment;
         private bool _status;
 
@@ -18,13 +18,13 @@ namespace ZooManagment.Entity
                     _taskID = value;
             }
         }
-        public int KeeperID
+        public int EmployeeID
         {
-            get => _keeperID;
+            get => _employeeID;
             set
             {
                 if (value > 0 && value < 90000000)
-                    _keeperID = value;
+                    _employeeID = value;
             }
         }
         public string Name
@@ -81,9 +81,9 @@ namespace ZooManagment.Entity
                 _status = value;
             }
         }
-        public Tasks(int keeperID, int id, string name, string priority, string location, string comment, bool status)
+        public Tasks(int employeeID, int id, string name, string priority, string location, string comment, bool status)
         {
-            KeeperID = keeperID;
+            EmployeeID = employeeID;
             TaskID = id;
             Name = name;
             Priority = priority;
