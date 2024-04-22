@@ -156,7 +156,7 @@ namespace ZooManagment.Controller
                 {
                     conn.Open();
                     cmnd.Connection = conn;
-                    int employeeID = task.KeeperID;
+                    int employeeID = task.EmployeeID;
                     string name = task.Name;
                     string priority = task.Priority;
                     string location = task.Location;
@@ -184,7 +184,7 @@ namespace ZooManagment.Controller
             using (SQLiteConnection conn = new SQLiteConnection(connectionString))
             {
                 int taskID = task.TaskID;
-                int employeeID = task.KeeperID;
+                int employeeID = task.EmployeeID;
                 string name = task.Name;
                 string priority = task.Priority;
                 string location = task.Location;
