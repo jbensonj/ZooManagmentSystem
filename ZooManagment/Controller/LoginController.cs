@@ -14,18 +14,15 @@ namespace ZooManagment.Controller
                 Account account = DBConnector.GetUser(email, pwd);
                 if (AuthenticateAccount(account))
                 {
-                    MessageBox.Show("Login Successful");
                     return true;
                 }
                 else
                 {
-                    MessageBox.Show("Login Failed. Please check your credentials and try again.");
                     return false;
                 }
             }
             else
             {
-                MessageBox.Show("Invalid input. Please ensure the email and password are correctly formatted.");
                 return false;
             }
         }
