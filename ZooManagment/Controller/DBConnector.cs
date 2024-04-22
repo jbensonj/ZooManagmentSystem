@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Collections.Generic;
 using System.Data.SQLite;
@@ -119,13 +119,13 @@ namespace ZooManagment.Controller
                 }
             }
         }
-        public static List<Tasks> GetTasks(Account account)
+        public static Tasklist GetTasks(Account account)
         {
             if (!File.Exists(@"..\..\..\Data\ZooManagmentSystem.db"))
             {
                 throw new Exception("Database not Initialized");
             }
-            List<Tasks> tasklist = new List<Tasks>();
+            Tasklist tasklist = new Tasklist();
             using (SQLiteConnection conn = new SQLiteConnection(connectionString))
             {
                 using (SQLiteCommand cmnd = new SQLiteCommand())
@@ -291,4 +291,3 @@ namespace ZooManagment.Controller
         }
     }
 }
-
