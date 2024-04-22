@@ -6,9 +6,9 @@ namespace ZooManagment.Entity
 {
     public class Tasklist
     {
-        private List<Task> _tasklist = new List<Task>();
-        public IReadOnlyList<Task> GetTasklist => _tasklist;
-        public void Add(Task task)
+        private List<Tasks> _tasklist = new List<Tasks>();
+        public IReadOnlyList<Tasks> GetTasklist => _tasklist;
+        public void Add(Tasks task)
         {
             _tasklist.Add(task);
         }
