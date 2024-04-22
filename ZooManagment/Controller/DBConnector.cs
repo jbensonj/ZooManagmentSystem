@@ -119,7 +119,7 @@ namespace ZooManagment.Controller
                 }
             }
         }
-        public static List<Tasks> getTasks(Account account)
+        public static List<Tasks> GetTasks(Account account)
         {
             if (!File.Exists(@"..\..\..\Data\ZooManagmentSystem.db"))
             {
@@ -144,7 +144,7 @@ namespace ZooManagment.Controller
             }
             return tasklist;
         }
-        public static void newTask(Tasks task)
+        public static void AddTask(Tasks task)
         {
             if (!File.Exists(@"..\..\..\Data\ZooManagmentSystem.db"))
             {
@@ -175,7 +175,7 @@ namespace ZooManagment.Controller
                 }
             }
         }
-        public static void setTask(Tasks task)
+        public static void SetTask(Tasks task)
         {
             if (!File.Exists(@"..\..\..\Data\ZooManagmentSystem.db"))
             {
