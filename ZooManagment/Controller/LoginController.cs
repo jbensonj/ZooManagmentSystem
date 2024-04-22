@@ -11,7 +11,7 @@ namespace ZooManagment.Controller
             if (ValidateInput(email, pwd))
             {
                 Account account = DBConnector.GetUser(email, pwd);
-                if (AuthenticateAccount(account))
+                if (Authenticate(account))
                 {
                     return true;
                 }
