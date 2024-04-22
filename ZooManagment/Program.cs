@@ -16,8 +16,16 @@ namespace ZooManagment
         {
             ApplicationConfiguration.Initialize();
             DBConnector.InitializeDatabase();
-            LoginController.Login("danderson@zoonew.org", "1qaz");
-            LoginController.Login("asdf", "asdf");
+            if(!LoginController.Login("danderson@zoonew.org", "1qaz"))
+            {
+                MessageBox.Show("Login Failed. Please check your credentials and try again.");
+            }
+            MessageBox.Show("Login Successful");
+            if(!LoginController.Login("asdf", "asdf"))
+            {
+                MessageBox.Show("Login Failed. Please check your credentials and try again.");
+            }
+            MessageBox.Show("Login Successful");
         }
     }
 }
