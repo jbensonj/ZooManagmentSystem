@@ -276,12 +276,13 @@ namespace ZooManagment.Controller
                         }
                     }
                 }
-                stm = @"INSERT INTO LOGIN VALUES($eventID, $time);";
+                stm = @"INSERT INTO LOGIN VALUES($eventID, $employeeID, $event, $time);";
                 using (SQLiteCommand cmnd = new SQLiteCommand())
                 {
                     cmnd.Connection = conn;
                     cmnd.CommandText = stm;
-                    cmnd.Parameters.AddWithValue("$id", eventID);
+                    cmnd.Parameters.AddWithValue("$eventID", eventID);
+                    cmnd.Parameters.AddWithValue("$employeeID", account.EmployeeID);
                     cmnd.Parameters.AddWithValue("$event", _event);
                     cmnd.Parameters.AddWithValue("$time", t);
                     cmnd.ExecuteNonQuery();
