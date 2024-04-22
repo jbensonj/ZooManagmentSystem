@@ -14,11 +14,10 @@ namespace ZooManagment
         [STAThread]
         static void Main()
         {
-            Console.WriteLine("Program start");
             ApplicationConfiguration.Initialize();
             DBConnector.InitializeDatabase();
             LoginController.Login("danderson@zoonew.org", "1qaz");
-            Console.WriteLine("Progam complete");
+            LoginController.Login("asdf", "asdf");
         }
     }
 }
