@@ -33,7 +33,7 @@ namespace ZooManagment.Controller
             }
             return true;
         }
-        private static bool AuthenticateAccount(Account account)
+        private static bool Authenticate(Account account)
         {
             if (account.Email != null && account.EmployeeID > 0)
             {
