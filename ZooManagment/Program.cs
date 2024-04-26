@@ -18,11 +18,21 @@ namespace ZooManagment
         {
             ApplicationConfiguration.Initialize();
             DBConnector.InitializeDatabase();
-            if (!LoginController.Login("danderson@zoonew.org", "1qaz")) //Test LoginController interaction with DBConnector by logging in a user//
-            {
-                MessageBox.Show("Username or password are incorrect please try again.");
-            }
-            MessageBox.Show("Login Successful");
+
+            //Test to show the creation of a task//
+            //Tasks taskCreate = new Tasks(1, 1, "Clean Trash", "Important", "Building A1", null, false);
+            //DBConnector.AddTask(taskCreate);
+
+            //Test to show the editing of task//
+            //Tasks taskEdit = new Tasks(3, 1, "Clean Trash", "Important", "Building A1", "Need to restock trashbags", true);
+            //DBConnector.SetTask(taskEdit);
+
+            //Test LoginController interaction with DBConnector by logging in a user//
+            //if (!LoginController.Login("danderson@zoonew.org", "1qaz"))
+            //{
+            //    MessageBox.Show("Username or password are incorrect please try again.");
+            //}
+            //MessageBox.Show("Login Successful");
         }
     }
 }
