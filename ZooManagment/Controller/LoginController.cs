@@ -16,6 +16,7 @@ namespace ZooManagment.Controller
                 Account account = DBConnector.GetUser(email, pwd);
                 if (Authenticate(account))
                 {
+                    //MessageBox.Show(DBConnector.GetTasks(account).ToString()); //Test to show retrieval of tasklist
                     DBConnector.SaveLogin(account);
                     return true;
                 }
