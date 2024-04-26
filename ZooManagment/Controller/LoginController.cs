@@ -27,6 +27,23 @@ namespace ZooManagment.Controller
         }
         private static bool ValidateInput(string email, string pwd)
         {
+            char[] danger = {'\\', '\0', '\n', '\r', '\'', '\"', ';', '='}; //blacklist of values
+            foreach (char c in email)
+            {
+                for (int i = 0; i < danger.Length; i++)
+                {
+                    if (c == danger[i])
+                        return false;
+                }
+            }
+            foreach (char c in pwd)
+            {
+                for (int i = 0; i < danger.Length; i++)
+                {
+                    if (c == danger[i])
+                        return false;
+                }
+            }
             if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(pwd) || !email.EndsWith("@zoonew.org"))
             {
                 return false;
