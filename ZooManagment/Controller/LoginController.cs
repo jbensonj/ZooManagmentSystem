@@ -16,6 +16,7 @@ namespace ZooManagment.Controller
                 Account account = DBConnector.GetUser(email, pwd);
                 if (Authenticate(account))
                 {
+                    DBConnector.SaveLogin(account);
                     return true;
                 }
                 else
