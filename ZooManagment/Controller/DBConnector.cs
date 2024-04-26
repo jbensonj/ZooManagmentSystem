@@ -49,7 +49,7 @@ namespace ZooManagment.Controller
                         , [name] TEXT NOT NULL
                         , [priority] TEXT NOT NULL
                         , [location] TEXT NOT NULL
-                        , [comments] MEDIUMTEXT
+                        , [comment] TEXT
                         , [status] BOOL NOT NULL
                     );";
                     cmnd.CommandText = table;
@@ -66,8 +66,8 @@ namespace ZooManagment.Controller
                     strSql = @"BEGIN TRANSACTION;
                         INSERT INTO ACCOUNT (employeeID, email, password, type) VALUES (1, $hashemail1, $hashpwd1, 'keeper');
                         INSERT INTO ACCOUNT (employeeID, email, password, type) VALUES (90000000, $hashemail2, $hashpwd2, 'manager');
-                        INSERT INTO TASK (employeeID, name, priority, location, comments, status) VALUES (1, 'anderson', 'Important', 'Building AE1', NULL, FALSE);
-                        INSERT INTO TASK (employeeID, name, priority, location, comments, status) VALUES (1, 'anderson', 'Low', 'Building AE2', 'please complete after completing your first task', FALSE);
+                        INSERT INTO TASK (employeeID, name, priority, location, comment, status) VALUES (1, 'anderson', 'Important', 'Building AE1', NULL, FALSE);
+                        INSERT INTO TASK (employeeID, name, priority, location, comment, status) VALUES (1, 'anderson', 'Low', 'Building AE2', 'please complete after completing your first task', FALSE);
                     COMMIT;";
                     cmnd.CommandText = strSql;
                     string email1 = "danderson@zoonew.org";
@@ -101,13 +101,13 @@ namespace ZooManagment.Controller
                 int x = email.GetHashCode();
                 int y = pwd.GetHashCode();
                 string stm = @"SELECT[employeeID]
-                    ,[type]
-                    ,[email]
-                    ,[password]
-                    FROM[ACCOUNT]
-                    WHERE[email] == ($name)
-                    AND[password] == ($pd)
-                ;";
+                             ,[type]
+                             ,[email]
+                             ,[password]
+                             FROM[ACCOUNT]
+                             WHERE[email] == ($name)
+                             AND[password] == ($pd)
+                             ;";
                 using (SQLiteCommand cmnd = new SQLiteCommand(stm, conn))
                 {
                     cmnd.Parameters.AddWithValue("$name", x);
@@ -117,9 +117,11 @@ namespace ZooManagment.Controller
                         while (rdr.Read())
                         {
                             Account acct = new Account(rdr.GetInt32(0), email, pwd);
+                            conn.Close();
                             return acct;
                         }
                         Account act = new Account(0, null, null);
+                        conn.Close();
                         return act;
                     }
                 }
@@ -145,12 +147,13 @@ namespace ZooManagment.Controller
                     {
                         while (rdr.Read())
                         {
-                            tasklist.Add(new Tasks(rdr.GetInt32(0), rdr.GetInt32(1), rdr.GetString(2), rdr.GetString(3), rdr.GetString(4), rdr.GetString(5), rdr.GetBoolean(6)));
+                            tasklist.Add(new Tasks( rdr.GetInt32(0), rdr.GetInt32(1), rdr.GetString(2), rdr.GetString(3), rdr.GetString(4), rdr.IsDBNull(5) ? null : rdr.GetString(5), rdr.GetBoolean(6)));
                         }
                     }
                 }
+                conn.Close();
+                return tasklist;
             }
-            return tasklist;
         }
         //<Summary>//
         //Allows the Manager to insert the a newly created task into the database//
@@ -166,22 +169,19 @@ namespace ZooManagment.Controller
                 {
                     conn.Open();
                     cmnd.Connection = conn;
-                    int employeeID = task.EmployeeID;
-                    string name = task.Name;
-                    string priority = task.Priority;
-                    string location = task.Location;
-                    string comments = task.Comment;
-                    bool status = task.Status;
                     string stm = @"BEGIN TRANSACTION;
-                                INSERT INTO TASK (employeeID, name, priority, location, comments, status) VALUES ($employeeID, $name, $priority, $location, $comments, $status)
-                                COMMIT;";
+                                 INSERT INTO TASK (employeeID, name, priority, location, comment, status) 
+                                 VALUES ($employeeID, $name, $priority, $location, $comment, $status);
+                                 COMMIT;";
                     cmnd.CommandText = stm;
-                    cmnd.Parameters.AddWithValue("$name", name);
-                    cmnd.Parameters.AddWithValue("$priority", priority);
-                    cmnd.Parameters.AddWithValue("$location", location);
-                    cmnd.Parameters.AddWithValue("$comments", comments);
-                    cmnd.Parameters.AddWithValue("$status", status);
+                    cmnd.Parameters.AddWithValue("$employeeID", task.EmployeeID);
+                    cmnd.Parameters.AddWithValue("$name", task.Name);
+                    cmnd.Parameters.AddWithValue("$priority", task.Priority);
+                    cmnd.Parameters.AddWithValue("$location", task.Location);
+                    cmnd.Parameters.AddWithValue("$comment", task.Comment);
+                    cmnd.Parameters.AddWithValue("$status", task.Status);
                     cmnd.ExecuteNonQuery();
+                    conn.Close();
                 }
             }
         }
@@ -196,32 +196,27 @@ namespace ZooManagment.Controller
             }
             using (SQLiteConnection conn = new SQLiteConnection(connectionString))
             {
-                int taskID = task.TaskID;
-                int employeeID = task.EmployeeID;
-                string name = task.Name;
-                string priority = task.Priority;
-                string location = task.Location;
-                string comments = task.Comment;
-                bool status = task.Status;
-                string stm = @"UPDATE TASK
-                    SET 
-                    employeeID = $employeeID
-                    ,name = $name
-                    ,status = $status
-                    ,priority = $priority
-                    ,location = $location
-                    ,comments = $commments
-                    WHERE taskID = $taskID
-                ;";
+                conn.Open();
+                string stm = @"UPDATE TASK 
+                             SET employeeID = $employeeID
+                             ,name = $name
+                             ,priority = $priority
+                             ,location = $location
+                             ,comment = $comment
+                             ,status = $status
+                             WHERE taskID = $taskID;
+                             ";
                 using (SQLiteCommand cmnd = new SQLiteCommand(stm, conn))
                 {
-                    cmnd.Parameters.AddWithValue("$taskID", taskID);
-                    cmnd.Parameters.AddWithValue("$name", name);
-                    cmnd.Parameters.AddWithValue("$priority", priority);
-                    cmnd.Parameters.AddWithValue("$location", location);
-                    cmnd.Parameters.AddWithValue("$comments", comments);
-                    cmnd.Parameters.AddWithValue("$status", status);
+                    cmnd.Parameters.AddWithValue("$employeeID", task.EmployeeID);
+                    cmnd.Parameters.AddWithValue("$name", task.Name);
+                    cmnd.Parameters.AddWithValue("$priority", task.Priority);
+                    cmnd.Parameters.AddWithValue("$location", task.Location);
+                    cmnd.Parameters.AddWithValue("$comment", task.Comment);
+                    cmnd.Parameters.AddWithValue("$status", task.Status);
+                    cmnd.Parameters.AddWithValue("$taskID", task.TaskID);
                     cmnd.ExecuteNonQuery();
+                    conn.Close();
                 }
             }
         }
@@ -239,7 +234,6 @@ namespace ZooManagment.Controller
                 DateTime time = DateTime.Now;
                 string t = time.ToString("s");
                 int eventID = 0;
-                string _event = "login";
                 int hash = account.Email.GetHashCode();
                 string stm = "SELECT [employeeID] FROM ACCOUNT WHERE email = ($email);";
                 using (SQLiteCommand cmnd = new SQLiteCommand(stm, conn))
@@ -253,15 +247,17 @@ namespace ZooManagment.Controller
                         }
                     }
                 }
-                stm = @"INSERT INTO LOGIN VALUES($eventID, $event, $time);";
+                stm = @"INSERT INTO EVENTLOG VALUES($eventID, $employeeID, $event, $time);";
                 using (SQLiteCommand cmnd = new SQLiteCommand())
                 {
                     cmnd.Connection = conn;
                     cmnd.CommandText = stm;
-                    cmnd.Parameters.AddWithValue("$id", eventID);
-                    cmnd.Parameters.AddWithValue("$event", _event);
+                    cmnd.Parameters.AddWithValue("$eventID", eventID);
+                    cmnd.Parameters.AddWithValue("$employeeID", account.EmployeeID);
+                    cmnd.Parameters.AddWithValue("$event", "Login");
                     cmnd.Parameters.AddWithValue("$time", t);
                     cmnd.ExecuteNonQuery();
+                    conn.Close();
                 }
             }
         }
@@ -279,7 +275,6 @@ namespace ZooManagment.Controller
                 DateTime time = DateTime.Now;
                 string t = time.ToString("s");
                 int eventID = 0;
-                string _event = "logout";
                 int hash = account.Email.GetHashCode();
                 string stm = "SELECT [employeeID] FROM ACCOUNT WHERE email = ($email);";
                 using (SQLiteCommand cmnd = new SQLiteCommand(stm, conn))
@@ -300,9 +295,10 @@ namespace ZooManagment.Controller
                     cmnd.CommandText = stm;
                     cmnd.Parameters.AddWithValue("$eventID", eventID);
                     cmnd.Parameters.AddWithValue("$employeeID", account.EmployeeID);
-                    cmnd.Parameters.AddWithValue("$event", _event);
+                    cmnd.Parameters.AddWithValue("$event", "logout");
                     cmnd.Parameters.AddWithValue("$time", t);
                     cmnd.ExecuteNonQuery();
+                    conn.Close();
                 }
             }
         }
