@@ -81,10 +81,10 @@ namespace ZooManagment.Entity
                 _status = value;
             }
         }
-        public Tasks(int employeeID, int id, string name, string priority, string location, string comment, bool status)
+        public Tasks(int taskID, int employeeID, string name, string priority, string location, string comment, bool status)
         {
+            TaskID = taskID;
             EmployeeID = employeeID;
-            TaskID = id;
             Name = name;
             Priority = priority;
             Location = location;
