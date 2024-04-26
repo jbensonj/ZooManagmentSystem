@@ -12,16 +12,13 @@ namespace ZooManagment
     public static class Program
     {
         [STAThread]
+        //<summary>//
+        //Initialize application and Database//
         static void Main()
         {
             ApplicationConfiguration.Initialize();
             DBConnector.InitializeDatabase();
-            if(!LoginController.Login("danderson@zoonew.org", "1qaz"))
-            {
-                MessageBox.Show("Username or password are incorrect please try again.");
-            }
-            MessageBox.Show("Login Successful");
-            if(!LoginController.Login("asdf", "asdf"))
+            if (!LoginController.Login("danderson@zoonew.org", "1qaz")) //Test LoginController interaction with DBConnector by logging in a user//
             {
                 MessageBox.Show("Username or password are incorrect please try again.");
             }
