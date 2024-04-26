@@ -8,8 +8,12 @@ namespace ZooManagment.Controller
 {
     public static class DBConnector
     {
-        private static string connectionString = @"Data Source =..\..\..\Data\ZooManagmentSystem.db;Version=3;"; //C:\Users\Admin\source\repos\ZooManagment\ZooManagment\Data\ZooManagmentSystem.db
+        //Put database Filepath here//
+        private static string connectionString = @"Data Source =..\..\..\Data\ZooManagmentSystem.db;Version=3;";
         
+        //<Summary>//
+        //Initialize the Database for our application//
+        //Drops all previous tables, rebuilds them on launch, adds 1 keeper, 1 manager user, and 2 tasks//
         public static void InitializeDatabase()
         {
             if (!File.Exists(@"..\..\..\Data\ZooManagmentSystem.db"))
@@ -83,6 +87,8 @@ namespace ZooManagment.Controller
                 }
             }
         }
+        //<Summary>//
+        //Pass a SQL command to database that returns the account based on the email and pwd of the user\\ 
         public static Account GetUser(string email, string pwd)
         {
             if (!File.Exists(@"..\..\..\Data\ZooManagmentSystem.db"))
@@ -119,6 +125,8 @@ namespace ZooManagment.Controller
                 }
             }
         }
+        //<Summary>//
+        //Get Tasklist from the database this can then be sorted to users EmployeeID when returned//
         public static Tasklist GetTasks(Account account)
         {
             if (!File.Exists(@"..\..\..\Data\ZooManagmentSystem.db"))
@@ -144,6 +152,8 @@ namespace ZooManagment.Controller
             }
             return tasklist;
         }
+        //<Summary>//
+        //Allows the Manager to insert the a newly created task into the database//
         public static void AddTask(Tasks task)
         {
             if (!File.Exists(@"..\..\..\Data\ZooManagmentSystem.db"))
@@ -175,6 +185,9 @@ namespace ZooManagment.Controller
                 }
             }
         }
+        //<Summary>//
+        //Allows keeper to complete and edit a task//
+        //premission on what is allowed to be changed can be filtered by the fuction calling SetTask to determine what can be changed//
         public static void SetTask(Tasks task)
         {
             if (!File.Exists(@"..\..\..\Data\ZooManagmentSystem.db"))
@@ -212,6 +225,8 @@ namespace ZooManagment.Controller
                 }
             }
         }
+        //<Summary>//
+        //Saves a Login event//
         public static void SaveLogin(Account account)
         {
             if (!File.Exists(@"..\..\..\Data\ZooManagmentSystem.db"))
@@ -250,6 +265,8 @@ namespace ZooManagment.Controller
                 }
             }
         }
+        //<Summary>//
+        //Saves a logout event//
         public static void SaveLogout(Account account)
         {
             if (!File.Exists(@"..\..\..\Data\ZooManagmentSystem.db"))
